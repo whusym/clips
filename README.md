@@ -1,0 +1,2 @@
+# clips
+Code samples CLIPS 
