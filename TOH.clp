@@ -13,8 +13,8 @@
 	(disks-provided ?v)
 	(test (evenp ?v))
 	(arranged ?b)
-   (test (eq false ?b))
-   ?F <- (arranged false)
+   	(test (eq false ?b))
+   	?F <- (arranged false)
 =>
 	(assert (arranged true))
 	(assert (leftof A B))
@@ -42,26 +42,26 @@
 )
 
 (defrule add-disk
-   (disks-provided ?v)
-   (arranged ?b)
-   (test (eq true ?b))
-   (test (neq 0 ?v))
-   ?F <- (disks-provided ?v)
+   	(disks-provided ?v)
+   	(arranged ?b)
+   	(test (eq true ?b))
+   	(test (neq 0 ?v))
+   	?F <- (disks-provided ?v)
  =>
-   (while (> ?v 0)
-   	 (assert (onPeg ?v A))
-      (printout t "Adding " ?v " on the peg" crlf)
-      (bind ?v (- ?v 1)))
-   (retract ?F)
+   	(while (> ?v 0)
+	 	(assert (onPeg ?v A))
+      	(printout t "Adding " ?v " on the peg" crlf)
+      	(bind ?v (- ?v 1)))
+   	(retract ?F)
 )
 
 ;From https://stackoverflow.com/questions/20275384/find-maximum-among-facts-in-clips
 (defrule find-min-value
-   (onPeg ?v ?p)
-   (not (onPeg ?v2 ?p &:(< ?v2 ?v)))
+   	(onPeg ?v ?p)
+   	(not (onPeg ?v2 ?p &:(< ?v2 ?v)))
 =>
-   ;(printout t "Disk " ?v " is the min on" ?p crlf)
-   (assert (minDisk ?v ?p))
+   	;(printout t "Disk " ?v " is the min on" ?p crlf)
+   	(assert (minDisk ?v ?p))
 )
 
 (defrule add-max
@@ -74,6 +74,7 @@
 )
 
 (defrule move-disk
+	; move to the immediate right peg
 	(minDisk ?v1 ?p)
 	?F1 <- (minDisk ?v1 ?p)
 	(minDisk ?v2 ?q)
@@ -97,6 +98,7 @@
 )
 
 (defrule move-disk-2
+	; if the immediate right peg is not available, move to the peg on its left (move to the second right)
 	(minDisk ?v1 ?p)
 	?F1 <- (minDisk ?v1 ?p)
 	(minDisk ?v2 ?q)
@@ -149,7 +151,6 @@
 	?F2 <- (minDisk 65536 C)
 	?F3 <- (lastMoved ?m)
 =>
-	;(printout t "blabla" crlf)
 	(retract ?F1)
 	(retract ?F3)
 	(assert (onPeg 1 C))
